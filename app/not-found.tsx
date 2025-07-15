@@ -4,11 +4,11 @@ import css from './not-found.module.css';
 export const metadata: Metadata = {
   title: 'Page not found',
   description:
-    "The page you're looking for doesn't exist or has been moved. Try going back to the homepage or explore other notes.",
+    "The page you're looking for doesn't exist or has been moved.",
   openGraph: {
     title: 'Page not found',
     description:
-      "The page you're looking for doesn't exist or has been moved. Try going back to the homepage or explore other notes.",
+      "The page you're looking for doesn't exist or has been moved.",
     images: [
       {
         url: '/page-note-found.jpeg',
