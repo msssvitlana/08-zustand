@@ -33,6 +33,7 @@ export default function NotesClient({ notesData, tag }: NotesClientProps) {
     queryFn: () => fetchNotes(debouncedQuery, currentPage, tag),
     placeholderData: keepPreviousData,
     initialData: currentPage === 1 && query === '' ? notesData : undefined,
+    refetchOnMount: true,
   });
 
   const handlePageChange = (page: number) => setCurrentPage(page);

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Сторінку не знайдено — NoteHub',
     description: 'Ця сторінка не існує. Спробуйте іншу адресу.',
-    url: 'https://08-zustand-cyan.vercel.app/',
+    url: 'https://08-zustand-cyan.vercel.app',
     images: [
       {
       url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',

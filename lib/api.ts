@@ -42,7 +42,7 @@ export async function fetchNotes(
     }
 
     
-    console.log('Fetch params:', { query, page, tag });
+    // console.log('Fetch params:', { query, page, tag });
 
     const response = await axios.get<NoteListResponse>("/notes", { params });
     console.log(">>> response.data:", response.data);

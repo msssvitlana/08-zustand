@@ -4,8 +4,9 @@ import css from './NoteForm.module.css';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { createNote } from '../../lib/api';
-import type { Note, NewNoteData } from '../../types/note';
+import type { Note, NewNoteData, NoteTag } from '../../types/note';
 import { useNoteDraftStore } from '../../lib/stores/noteStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface NoteFormProps {
   tags: string[];
@@ -16,14 +17,18 @@ interface NoteFormProps {
 
 const NoteForm = ({ tags, onSuccess }: NoteFormProps) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const { draft, setDraft, clearDraft } = useNoteDraftStore();
 
   const { mutate } = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
       clearDraft();
+      queryClient.invalidateQueries({ queryKey: ['Notes'] });
       onSuccess?.();
-      router.push('/notes/filter/all');
+      router.back();
+      router.refresh(); 
     },
     onError: (error) => {
       console.error('Error creating note:', error);
@@ -40,23 +45,22 @@ const NoteForm = ({ tags, onSuccess }: NoteFormProps) => {
     });
   };
 
-  const handleSubmit = () => {
-    const { title, tag } = draft;
-    if (!title || !tag) {
-      alert('Please fill all required fields');
-      return;
-    }
-    mutate(draft as NewNoteData);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+  
+    const data: NewNoteData = {
+      title: formData.get('title') as string,
+      content: formData.get('content') as string,
+      tag: formData.get('tag') as NoteTag,
+    };
+  
+    mutate(data);
   };
 
+
   return (
-    <form
-      className={css.form}
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit();
-      }}
-    >
+    <form className={css.form} onSubmit={handleSubmit}>
    <label className={css.formGroup}>
         Title
         <input
