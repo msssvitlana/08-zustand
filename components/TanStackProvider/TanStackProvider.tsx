@@ -19,4 +19,4 @@ const TanStackProvider = ({ children }: Props) => {
   );
 };
 
-export default TanStackProvider;
+export default TanStackProvider; 

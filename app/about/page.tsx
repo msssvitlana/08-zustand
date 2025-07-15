@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'About page',
+  description: 'About info page',
 };
 
 const About = () => {

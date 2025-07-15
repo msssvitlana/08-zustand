@@ -8,10 +8,9 @@ import type { NoteListResponse } from '../../../../lib/api';
 import NoteList from '../../../../components/NoteList/NoteList';
 import Pagination from '../../../../components/Pagination/Pagination';
 import SearchBox from '../../../../components/SearchBox/SearchBox';
-import Modal from '../../../../components/Modal/Modal';
 import Loader from '../../../../components/Loader/Loader';
 import css from './NotesPage.module.css';
-import NoteForm from '../../../../components/NoteForm/NoteForm';
+import Link from 'next/link'; 
 
 interface NotesClientProps {
   notesData: NoteListResponse;
@@ -22,33 +21,26 @@ export default function NotesClient({ notesData, tag }: NotesClientProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState('');
   const [debouncedQuery] = useDebounce(query, 1000);
-  const [modalOpen, setModalOpen] = useState(false);
 
   const {
     data,
     isLoading,
     isError,
     error,
-    refetch,
     isSuccess,
   } = useQuery({
     queryKey: ['Notes', debouncedQuery, currentPage, tag],
-queryFn: () => fetchNotes(debouncedQuery, currentPage, tag),
-
+    queryFn: () => fetchNotes(debouncedQuery, currentPage, tag),
     placeholderData: keepPreviousData,
     initialData: currentPage === 1 && query === '' ? notesData : undefined,
   });
 
-  const handleModalOpen = () => setModalOpen(true);
-  const handleModalClose = () => setModalOpen(false);
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleQueryChange = (value: string) => {
     setQuery(value);
     setCurrentPage(1);
   };
 
-
-  console.log({ data, isLoading, isError, error })
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
@@ -61,9 +53,9 @@ queryFn: () => fetchNotes(debouncedQuery, currentPage, tag),
             currentPage={currentPage}
           />
         )}
-        <button className={css.button} onClick={handleModalOpen}>
+        <Link href="/notes/action/create" className={css.button}>
           Create note +
-        </button>
+        </Link>
       </header>
 
       {isError && (
@@ -72,21 +64,10 @@ queryFn: () => fetchNotes(debouncedQuery, currentPage, tag),
         </p>
       )}
 
-        {data && <NoteList notes={data.notes} />}
+      {data && <NoteList notes={data.notes} />}
 
       {isSuccess && data.notes?.length === 0 && (
-        <p className={css.loaderror}>No notes found for tag `${tag}`</p>
-      )}
-
-      {modalOpen && (
-        <Modal onClose={handleModalClose}>
-          <NoteForm
-            onSuccess={() => {
-              refetch();
-              handleModalClose();
-            }}
-          />
-        </Modal>
+        <p className={css.loaderror}>No notes found for tag `{tag}`</p>
       )}
     </div>
   );

@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 
+
+
 const Profile = () => {
   return (
     <section>
