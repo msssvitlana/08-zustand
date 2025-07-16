@@ -1,14 +1,15 @@
 import { fetchNotes } from "../../../../lib/api";
 import NotesClient from "./Notes.client";
-
+import { Metadata } from 'next';
 
 type FilteredNotesPageProps = {
   params: Promise<{ slug: string[] }>;
 };
 
-export async function generateMetadata({ params }: FilteredNotesPageProps) {
-  const { slug } = await params
+export async function generateMetadata({ params }: FilteredNotesPageProps): Promise<Metadata> {
+  const { slug } = await params; 
   const tag = slug[0] === "All" ? undefined : slug[0];
+
   return {
     title: `Нотатки за фільтром: ${tag}`,
     description: `Перегляд нотаток з фільтром "${tag}"`,
@@ -20,7 +21,6 @@ export async function generateMetadata({ params }: FilteredNotesPageProps) {
     },
   };
 }
-
 
 export default async function FilteredNotesPage({
   params,
