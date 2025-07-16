@@ -17,7 +17,13 @@ export async function generateMetadata({ params }: FilteredNotesPageProps): Prom
       title: `Нотатки за фільтром: ${tag}`,
       description: `Перегляд нотаток з фільтром "${tag}"`,
       url: `https://08-zustand-cyan.vercel.app/${slug}`,
-      images: ['https://ac.goit.global/fullstack/react/notehub-og-meta.jpg'],
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
   };
 }
